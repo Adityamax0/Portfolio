@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Aditya Pandey — AI × ML Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --black:  #080808;
+    --white:  #f4f1ec;
+    --gray:   #888880;
+    --dim:    #2a2a28;
+    --line:   #1e1e1c;
+    --accent: #c8a96e;
+    --serif:  'DM Serif Display', Georgia, serif;
+    --mono:   'DM Mono', 'Courier New', monospace;
+    --sans:   'DM Sans', system-ui, sans-serif;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--black);
+    color: var(--white);
+    font-family: var(--sans);
+    font-weight: 300;
+    line-height: 1.75;
+    overflow-x: hidden;
+    cursor: none;
+  }
+
+  /* CURSOR */
+  .cur { position:fixed; width:8px; height:8px; background:var(--accent); border-radius:50%; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); transition:width .25s,height .25s; }
+  .cur-ring { position:fixed; width:34px; height:34px; border:1px solid rgba(200,169,110,.35); border-radius:50%; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); }
+
+  /* NOISE */
+  body::after { content:''; position:fixed; inset:0; background:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.035'/%3E%3C/svg%3E"); pointer-events:none; z-index:2; }
+
+  /* NAV */
+  nav { position:fixed; top:0; left:0; right:0; z-index:100; padding:28px 56px; display:flex; justify-content:space-between; align-items:center; background:linear-gradient(rgba(8,8,8,.96),transparent); }
+  .nav-logo { font-family:var(--mono); font-size:13px; letter-spacing:.18em; color:var(--accent); text-decoration:none; }
+  .nav-links { display:flex; gap:44px; list-style:none; }
+  .nav-links a { font-family:var(--mono); font-size:11px; letter-spacing:.14em; color:var(--gray); text-decoration:none; text-transform:uppercase; transition:color .3s; }
+  .nav-links a:hover { color:var(--white); }
+
+  /* HERO */
+  #hero { min-height:100vh; display:flex; flex-direction:column; justify-content:flex-end; padding:0 56px 88px; position:relative; overflow:hidden; }
+
+  .hero-ghost { position:absolute; top:50%; left:50%; transform:translate(-50%,-54%); font-family:var(--serif); font-size:clamp(90px,20vw,260px); color:rgba(255,255,255,.022); white-space:nowrap; pointer-events:none; user-select:none; letter-spacing:-.02em; }
+
+  .hero-label { font-family:var(--mono); font-size:11px; letter-spacing:.22em; color:var(--accent); text-transform:uppercase; margin-bottom:28px; opacity:0; animation:up .9s ease forwards .2s; }
+
+  .hero-h1 { font-family:var(--serif); font-size:clamp(48px,8.5vw,115px); line-height:.98; letter-spacing:-.035em; margin-bottom:36px; opacity:0; animation:up .9s ease forwards .4s; }
+  .hero-h1 em { font-style:italic; color:var(--accent); }
+
+  .hero-sub { font-size:15px; color:var(--gray); max-width:420px; line-height:1.85; opacity:0; animation:up .9s ease forwards .6s; }
+
+  .hero-row { display:flex; justify-content:space-between; align-items:flex-end; margin-top:60px; opacity:0; animation:up .9s ease forwards .8s; }
+
+  .btn { display:inline-flex; align-items:center; gap:14px; padding:15px 34px; border:1px solid rgba(200,169,110,.38); color:var(--accent); font-family:var(--mono); font-size:12px; letter-spacing:.12em; text-decoration:none; text-transform:uppercase; position:relative; overflow:hidden; transition:color .35s; }
+  .btn::before { content:''; position:absolute; inset:0; background:var(--accent); transform:translateX(-101%); transition:transform .4s cubic-bezier(.4,0,.2,1); }
+  .btn:hover::before { transform:translateX(0); }
+  .btn:hover { color:var(--black); }
+  .btn span { position:relative; z-index:1; }
+
+  .scroll-hint { font-family:var(--mono); font-size:10px; letter-spacing:.18em; color:var(--dim); text-transform:uppercase; writing-mode:vertical-rl; }
+
+  /* SECTIONS */
+  section { padding:112px 56px; border-top:1px solid var(--line); }
+
+  .s-label { font-family:var(--mono); font-size:10px; letter-spacing:.28em; color:var(--accent); text-transform:uppercase; margin-bottom:72px; display:flex; align-items:center; gap:18px; }
+  .s-label::after { content:''; width:48px; height:1px; background:var(--accent); opacity:.35; }
+
+  /* ABOUT INTRO */
+  .about-intro-wrap { display:grid; grid-template-columns:1fr 1fr; gap:88px; align-items:start; }
+  .about-h2 { font-family:var(--serif); font-size:clamp(36px,4vw,58px); line-height:1.1; letter-spacing:-.025em; }
+  .about-h2 em { font-style:italic; color:var(--accent); }
+  .about-p { color:var(--gray); font-size:15px; line-height:1.9; margin-bottom:22px; }
+  .about-p strong { color:var(--white); font-weight:400; }
+  .about-links { margin-top:8px; font-family:var(--mono); font-size:12px; letter-spacing:.06em; color:var(--dim); }
+  .about-links a { color:var(--gray); text-decoration:none; transition:color .3s; }
+  .about-links a:hover { color:var(--accent); }
+
+  /* THINKING SECTION */
+  #thinking { background:rgba(200,169,110,.018); }
+
+  .thinking-wrap { display:grid; grid-template-columns:1fr 1fr; gap:88px; align-items:start; }
+
+  .thinking-left h2 { font-family:var(--serif); font-size:clamp(34px,3.8vw,52px); line-height:1.12; letter-spacing:-.025em; margin-bottom:32px; }
+  .thinking-left h2 em { font-style:italic; color:var(--accent); }
+
+  .thinking-left p { color:var(--gray); font-size:15px; line-height:1.9; margin-bottom:20px; }
+  .thinking-left p strong { color:var(--white); font-weight:400; }
+
+  .callout { margin-top:36px; border-left:2px solid var(--accent); padding:20px 28px; background:rgba(200,169,110,.04); }
+  .callout p { color:var(--white); font-size:14px; line-height:1.8; margin:0; font-style:italic; }
+
+  .code-block { background:rgba(255,255,255,.025); border:1px solid var(--line); padding:32px 36px; font-family:var(--mono); font-size:12.5px; line-height:1.85; color:var(--gray); position:relative; overflow:hidden; white-space:pre; overflow-x:auto; }
+  .code-block::before { content:''; position:absolute; top:0; left:0; width:2px; height:100%; background:var(--accent); opacity:.5; }
+  .cc { color:#3a3a38; }
+  .ck { color:var(--accent); }
+  .cf { color:#e0d0b0; }
+  .cs { color:#7a9a70; }
+
+  /* PROJECTS */
+  .proj-featured { display:grid; grid-template-columns:1fr 1fr; border:1px solid var(--line); margin-bottom:2px; transition:border-color .3s; }
+  .proj-featured:hover { border-color:rgba(200,169,110,.3); }
+
+  .proj-vis { background:rgba(255,255,255,.015); padding:56px 48px; display:flex; align-items:center; justify-content:center; border-right:1px solid var(--line); min-height:360px; position:relative; }
+  .proj-vis::before { content:''; position:absolute; inset:0; background:radial-gradient(ellipse at center,rgba(200,169,110,.055) 0%,transparent 68%); }
+
+  .diagram { font-family:var(--mono); font-size:11.5px; color:var(--dim); line-height:2; position:relative; z-index:1; transition:color .4s; white-space:pre; }
+  .proj-featured:hover .diagram { color:var(--gray); }
+  .dhi { color:var(--accent); }
+
+  .proj-info { padding:56px 52px; display:flex; flex-direction:column; justify-content:center; }
+
+  .proj-tag { font-family:var(--mono); font-size:10px; letter-spacing:.22em; color:var(--accent); text-transform:uppercase; margin-bottom:22px; display:flex; align-items:center; gap:12px; }
+  .proj-tag::before { content:''; width:22px; height:1px; background:var(--accent); }
+
+  .proj-title { font-family:var(--serif); font-size:38px; letter-spacing:-.02em; margin-bottom:20px; line-height:1.05; }
+
+  .proj-desc { color:var(--gray); font-size:14px; line-height:1.9; margin-bottom:28px; }
+  .proj-desc strong { color:var(--white); font-weight:400; }
+
+  .proj-status { font-family:var(--mono); font-size:11px; letter-spacing:.1em; color:var(--gray); margin-bottom:28px; display:flex; align-items:center; gap:10px; }
+  .dot-live { width:7px; height:7px; border-radius:50%; background:#6a9a60; display:inline-block; box-shadow:0 0 6px #6a9a60; }
+  .dot-dev { width:7px; height:7px; border-radius:50%; background:var(--accent); display:inline-block; animation:pulse 2s infinite; }
+  @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+  .tags { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:36px; }
+  .tag { font-family:var(--mono); font-size:10.5px; padding:5px 13px; border:1px solid var(--dim); color:var(--gray); letter-spacing:.05em; transition:all .3s; }
+  .proj-featured:hover .tag, .proj-card:hover .tag { border-color:rgba(200,169,110,.28); color:var(--accent); }
+
+  .proj-link { font-family:var(--mono); font-size:11px; letter-spacing:.12em; color:var(--accent); text-decoration:none; text-transform:uppercase; display:inline-flex; align-items:center; gap:10px; transition:gap .3s; }
+  .proj-link:hover { gap:18px; }
+
+  .proj-grid { display:grid; grid-template-columns:1fr 1fr; gap:2px; margin-top:2px; }
+
+  .proj-card { border:1px solid var(--line); padding:48px; transition:border-color .3s,background .3s; }
+  .proj-card:hover { border-color:rgba(200,169,110,.25); background:rgba(200,169,110,.015); }
+
+  .proj-card-num { font-family:var(--mono); font-size:10px; color:var(--dim); letter-spacing:.18em; margin-bottom:28px; }
+  .proj-card-title { font-family:var(--serif); font-size:30px; letter-spacing:-.02em; margin-bottom:14px; line-height:1.05; }
+  .proj-card-desc { color:var(--gray); font-size:13.5px; line-height:1.85; margin-bottom:24px; }
+
+  /* STACK */
+  .stack-intro { color:var(--gray); font-size:15px; line-height:1.9; max-width:600px; margin-bottom:64px; }
+  .stack-intro strong { color:var(--white); font-weight:400; }
+
+  .stack-tbl { width:100%; border-collapse:collapse; }
+  .stack-tbl tr { border-bottom:1px solid var(--line); transition:background .2s; }
+  .stack-tbl tr:hover { background:rgba(255,255,255,.018); }
+  .stack-tbl td { padding:28px 0; font-size:14px; vertical-align:top; }
+  .stack-tbl td:first-child { font-family:var(--mono); font-size:10.5px; letter-spacing:.16em; color:var(--accent); text-transform:uppercase; width:180px; padding-right:44px; padding-top:30px; }
+  .stack-tbl td:last-child { color:var(--gray); line-height:1.75; }
+  .stack-tbl td:last-child strong { color:var(--white); font-weight:400; }
+  .stack-tbl .honest { font-family:var(--mono); font-size:10px; color:var(--dim); letter-spacing:.06em; margin-top:6px; display:block; }
+
+  /* NUMBERS */
+  .num-grid { display:grid; grid-template-columns:repeat(4,1fr); }
+  .num-item { padding:60px 36px; border-right:1px solid var(--line); transition:background .3s; }
+  .num-item:last-child { border-right:none; }
+  .num-item:hover { background:rgba(255,255,255,.012); }
+  .num-val { font-family:var(--serif); font-size:58px; line-height:1; color:var(--accent); letter-spacing:-.03em; margin-bottom:14px; }
+  .num-lbl { font-size:13px; color:var(--gray); line-height:1.6; }
+  .num-link { text-decoration:none; display:block; }
+  .num-link .num-val { transition:opacity .3s; }
+  .num-link:hover .num-val { opacity:.7; }
+  .num-link .num-lbl { transition:color .3s; }
+  .num-link:hover .num-lbl { color:var(--accent); }
+
+  /* CONTACT */
+  #contact { text-align:center; padding:128px 56px; }
+  .contact-pre { font-family:var(--mono); font-size:11px; letter-spacing:.22em; color:var(--accent); text-transform:uppercase; margin-bottom:36px; }
+  .contact-h2 { font-family:var(--serif); font-size:clamp(38px,5.5vw,72px); letter-spacing:-.03em; line-height:1.08; margin-bottom:52px; }
+  .contact-h2 em { font-style:italic; color:var(--accent); }
+  .contact-email { font-family:var(--mono); font-size:17px; color:var(--white); text-decoration:none; border-bottom:1px solid var(--dim); padding-bottom:8px; letter-spacing:.02em; transition:color .3s,border-color .3s; }
+  .contact-email:hover { color:var(--accent); border-color:var(--accent); }
+  .contact-row { margin-top:52px; display:flex; justify-content:center; gap:44px; }
+  .contact-row a { font-family:var(--mono); font-size:11px; letter-spacing:.14em; color:var(--gray); text-decoration:none; text-transform:uppercase; transition:color .3s; }
+  .contact-row a:hover { color:var(--white); }
+
+  footer { border-top:1px solid var(--line); padding:28px 56px; display:flex; justify-content:space-between; }
+  footer span { font-family:var(--mono); font-size:10.5px; color:var(--dim); letter-spacing:.08em; }
+
+  /* ANIMATE */
+  @keyframes up { from{opacity:0;transform:translateY(28px)} to{opacity:1;transform:translateY(0)} }
+  .reveal { opacity:0; transform:translateY(22px); transition:opacity .85s ease,transform .85s ease; }
+  .reveal.in { opacity:1; transform:translateY(0); }
+
+  /* MOBILE */
+  @media(max-width:768px){
+    nav { padding:22px 24px; }
+    .nav-links { display:none; }
+    section { padding:72px 24px; }
+    #hero { padding:0 24px 64px; }
+    .hero-h1 { font-size:50px; }
+    .thinking-wrap,.about-intro-wrap { grid-template-columns:1fr; gap:48px; }
+    .proj-featured { grid-template-columns:1fr; }
+    .proj-vis { display:none; }
+    .proj-info { padding:36px 28px; }
+    .proj-grid { grid-template-columns:1fr; }
+    .proj-card { padding:32px 24px; }
+    .num-grid { grid-template-columns:1fr 1fr; }
+    .num-item { padding:40px 24px; border-bottom:1px solid var(--line); }
+    .num-item:nth-child(2n){ border-right:none; }
+    footer { flex-direction:column; gap:10px; }
+    body { cursor:auto; }
+    .cur,.cur-ring { display:none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cur" id="cur"></div>
+<div class="cur-ring" id="curRing"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="nav-logo">AP_</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#thinking">Thinking</a></li>
+    <li><a href="#projects">Work</a></li>
+    <li><a href="#stack">Stack</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-ghost">ADITYA</div>
+  <div class="hero-label" id="heroLabel">Semester 4 &nbsp;·&nbsp; Class of 2028 &nbsp;·&nbsp; Open to Internships</div>
+  <h1 class="hero-h1">
+    The developer<br/>
+    who asks <em>why</em><br/>
+    before <em>how.</em>
+  </h1>
+  <p class="hero-sub">
+    AI × ML Developer. I don't just apply models —
+    I understand what they're doing and why they work.
+    That's a different kind of useful.
+  </p>
+  <div class="hero-row">
+    <a href="#projects" class="btn"><span>See my work</span><span>→</span></a>
+    <span class="scroll-hint">Scroll</span>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="s-label">000 / Who</div>
+  <div class="about-intro-wrap">
+    <div class="about-intro-left reveal">
+      <h2 class="about-h2">
+        I'm <em>Aditya&nbsp;Pandey.</em><br/>
+        I build AI that<br/>understands people.
+      </h2>
+    </div>
+    <div class="about-intro-right reveal">
+      <p class="about-p">
+        B.Tech CSE (AI &amp; ML) · MIPS Kanpur · Semester 4 · Class of 2028.
+        Born and raised in Kanpur, Uttar Pradesh.
+      </p>
+      <p class="about-p">
+        I got into AI not because of the hype — but because I wanted to understand
+        how machines can be made to genuinely <strong>understand</strong> human context,
+        not just process input. That obsession became MEMET.
+        That obsession is why I'm here.
+      </p>
+      <p class="about-p">
+        My primary language is <strong>Python.</strong> Everything I build starts there.
+        I don't pretend to know tools I've only seen tutorials about —
+        what I know, I know deeply. What I'm learning, I say so.
+      </p>
+      <p class="about-p">
+        Semester 4. Three real ML systems already built.
+        Not demos. Not copies of YouTube projects.
+        <strong>Real systems with logic I designed from first principles.</strong>
+      </p>
+      <div class="about-links">
+        <a href="mailto:adityapandey9326@gmail.com">adityapandey9326@gmail.com</a>
+        &nbsp;·&nbsp;
+        <a href="https://www.linkedin.com/in/aditya-pandey-ai-ml" target="_blank">LinkedIn</a>
+        &nbsp;·&nbsp;
+        <a href="https://github.com/Adityamax0" target="_blank">GitHub</a>
+        &nbsp;·&nbsp;
+        <a href="https://leetcode.com/u/adityapandey9326" target="_blank">LeetCode</a>
+        &nbsp;·&nbsp;
+        <a href="https://www.hackerrank.com/profile/adityapandey9326" target="_blank">HackerRank</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW I THINK -->
+<section id="thinking">
+  <div class="s-label">001 / How I think</div>
+  <div class="thinking-wrap">
+    <div class="thinking-left reveal">
+      <h2>Most developers<br/>ask <em>"what tool?"</em><br/>I ask <em>"what's true?"</em></h2>
+      <p>
+        Before I write a single line, I need to understand
+        <strong>what a correct solution actually requires.</strong>
+        Not which library solves it. What needs to be true for it to work.
+      </p>
+      <p>
+        That question changes how you build everything.
+        It's why my code tends to be modular, explainable, and fixable —
+        because every piece was placed with a reason.
+      </p>
+      <p>
+        I'm in Semester 4. I've already built three ML systems.
+        The gap between where I am and where most students are
+        isn't about knowing more tools.
+        <strong>It's about thinking differently about problems.</strong>
+      </p>
+      <div class="callout">
+        <p>"The best ML engineers I've seen aren't the ones who know the most algorithms.
+        They're the ones who know exactly <em>when</em> an algorithm is the wrong answer."</p>
+      </div>
+    </div>
+    <div class="reveal">
+      <div class="code-block">
+<span class="cc"># How I approach every problem. No exceptions.</span>
+
+<span class="ck">def</span> <span class="cf">how_aditya_works</span>(problem):
+
+    <span class="cc"># Step 1: What is this problem actually doing?</span>
+    <span class="cc"># Not "what library fixes this" — what is true.</span>
+    root = understand_deeply(problem)
+
+    <span class="cc"># Step 2: Design before code.</span>
+    <span class="cc"># Draw the logic. Find the edge cases.</span>
+    <span class="cc"># Most bugs are born right here — in the skip.</span>
+    design = model_on_paper(root)
+
+    <span class="cc"># Step 3: Write clean, single-responsibility code.</span>
+    <span class="cc"># If a function does two things, it does zero things.</span>
+    code = implement_modular(design)
+
+    <span class="cc"># Step 4: Iterate until it works in the real world.</span>
+    <span class="cc"># "It runs" and "it works" are different sentences.</span>
+    <span class="ck">return</span> ship_then_improve(code)
+
+<span class="cc"># Most people skip steps 1 and 2.</span>
+<span class="cc"># That's the entire gap.</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="s-label">002 / Work</div>
+
+  <!-- DPI FEATURED -->
+  <div class="proj-featured reveal">
+    <div class="proj-vis">
+      <div class="diagram">  RAW DATA
+      │
+      ▼
+  ┌─────────────┐
+  │   PARSER    │
+  └──────┬──────┘
+         │
+         ▼
+  ┌─────────────┐
+  │  PROCESSOR  │◄── context
+  └──────┬──────┘
+         │
+         ▼
+  ┌─────────────┐
+  │ <span class="dhi">ML ENGINE</span>   │──► output
+  └──────┬──────┘
+         │
+  ┌──────▼──────┐
+  │ <span class="dhi">INSIGHT OUT</span> │
+  └─────────────┘</div>
+    </div>
+    <div class="proj-info">
+      <div class="proj-tag">Signature Build</div>
+      <div class="proj-status"><span class="dot-live"></span> Core complete</div>
+      <h3 class="proj-title">DPI — Data Pipeline Intelligence</h3>
+      <p class="proj-desc">
+        A full end-to-end ML pipeline where every layer has exactly one job.
+        Raw data goes in. Structured intelligence comes out.
+        <strong>This is the project that made systems thinking real for me</strong> —
+        not as a phrase, but as something I actually practice.
+      </p>
+      <div class="tags">
+        <span class="tag">Python</span>
+        <span class="tag">Scikit-learn</span>
+        <span class="tag">ML Pipeline</span>
+        <span class="tag">Data Processing</span>
+        <span class="tag">Prompt Engineering</span>
+      </div>
+      <a href="https://github.com/Adityamax0" class="proj-link">GitHub <span>→</span></a>
+    </div>
+  </div>
+
+  <!-- GRID: SCAS + MEMET -->
+  <div class="proj-grid">
+    <div class="proj-card reveal">
+      <div class="proj-card-num">002</div>
+      <div class="proj-status"><span class="dot-dev"></span> In development</div>
+      <h3 class="proj-card-title">SCAS</h3>
+      <p class="proj-card-desc">
+        Smart Crop Advisory System. Core ML logic trained and working —
+        soil pH, moisture, weather → fertilizer recommendations.
+        Frontend prototype complete. Building toward full production deployment.
+        The goal: give Indian farmers data instead of guesswork.
+      </p>
+      <div class="tags">
+        <span class="tag">Python</span>
+        <span class="tag">Scikit-learn</span>
+        <span class="tag">Pandas</span>
+        <span class="tag">NumPy</span>
+      </div>
+    </div>
+
+    <div class="proj-card reveal">
+      <div class="proj-card-num">003</div>
+      <div class="proj-status"><span class="dot-dev"></span> In development</div>
+      <h3 class="proj-card-title">MEMET</h3>
+      <p class="proj-card-desc">
+        My Mate — AI emotional assistant. Sentiment analysis engine built.
+        Emotional tracking logic complete. Frontend prototype done.
+        The idea: an AI that doesn't just read your words —
+        it reads your state of mind. Working toward full deployment.
+      </p>
+      <div class="tags">
+        <span class="tag">Python</span>
+        <span class="tag">NLP</span>
+        <span class="tag">NLTK</span>
+        <span class="tag">Sentiment Analysis</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- STACK -->
+<section id="stack">
+  <div class="s-label">003 / What I actually know</div>
+  <p class="stack-intro reveal">
+    I list what I <strong>genuinely understand</strong> — not what I've seen a tutorial about.
+    If it's on this list, I can explain it, use it, and debug it from scratch.
+  </p>
+  <table class="stack-tbl reveal">
+    <tr>
+      <td>Core Language</td>
+      <td>
+        <strong>Python — 5★ HackerRank Gold Badge.</strong> This is home.
+        I think in Python. I debug in Python. Everything starts here.
+      </td>
+    </tr>
+    <tr>
+      <td>AI / ML</td>
+      <td>
+        <strong>Scikit-learn · Pandas · NumPy · NLTK</strong><br/>
+        Natural Language Processing · Sentiment Analysis · Prompt Engineering &amp; LLM Orchestration
+        <span class="honest">→ I understand what these do under the hood, not just the API calls.</span>
+      </td>
+    </tr>
+    <tr>
+      <td>CS Fundamentals</td>
+      <td>
+        <strong>Data Structures &amp; Algorithms</strong> (100+ LeetCode) · OOP principles ·
+        <strong>C++ basics</strong> · Git &amp; GitHub · Linux CLI
+        <span class="honest">→ Strong conceptual foundations. This is what makes ML actually work.</span>
+      </td>
+    </tr>
+    <tr>
+      <td>Currently<br/>Learning</td>
+      <td>
+        ML model deployment · Production architecture · Backend scalability ·
+        Model evaluation &amp; validation
+        <span class="honest">→ Honest about what's next. Growth is part of the profile.</span>
+      </td>
+    </tr>
+    <tr>
+      <td>Certifications</td>
+      <td>
+        <strong>Prompt Engineering for Everyone</strong> · HP Life AI Foundations ·
+        Data Science &amp; Analytics · Effective Leadership
+      </td>
+    </tr>
+  </table>
+</section>
+
+<!-- NUMBERS -->
+<section id="numbers">
+  <div class="s-label">004 / By the numbers</div>
+  <div class="num-grid reveal">
+    <div class="num-item">
+      <a href="https://www.hackerrank.com/profile/adityapandey9326" target="_blank" class="num-link">
+        <div class="num-val">5★</div>
+        <div class="num-lbl">Python<br/>HackerRank Gold</div>
+      </a>
+    </div>
+    <div class="num-item">
+      <a href="https://leetcode.com/u/adityapandey9326" target="_blank" class="num-link">
+        <div class="num-val">100+</div>
+        <div class="num-lbl">DSA problems<br/>LeetCode</div>
+      </a>
+    </div>
+    <div class="num-item">
+      <div class="num-val">Sem 4</div>
+      <div class="num-lbl">Building real<br/>ML systems</div>
+    </div>
+    <div class="num-item">
+      <div class="num-val">2028</div>
+      <div class="num-lbl">Graduation<br/>Long runway ahead</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="contact-pre">005 / Let's talk</div>
+  <h2 class="contact-h2 reveal">
+    You have a problem.<br/>
+    I find it <em>interesting.</em>
+  </h2>
+  <a href="mailto:adityapandey9326@gmail.com" class="contact-email reveal">
+    adityapandey9326@gmail.com
+  </a>
+  <div class="contact-row reveal">
+    <a href="https://www.linkedin.com/in/aditya-pandey-ai-ml" target="_blank">LinkedIn</a>
+    <a href="https://github.com/Adityamax0" target="_blank">GitHub</a>
+    <a href="https://leetcode.com/u/adityapandey9326" target="_blank">LeetCode</a>
+    <a href="https://www.hackerrank.com/profile/adityapandey9326" target="_blank">HackerRank</a>
+  </div>
+</section>
+
+<footer>
+  <span>Aditya Pandey · MIPS Kanpur · Sem 4 · Class of 2028</span>
+  <span>"5 seats. A million applicants. I understand the problem. That's my answer."</span>
+</footer>
+
+<script>
+  // ── CURSOR ─────────────────────────────────────────────
+  const cur = document.getElementById('cur');
+  const ring = document.getElementById('curRing');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove', e => {
+    mx=e.clientX; my=e.clientY;
+    cur.style.left=mx+'px'; cur.style.top=my+'px';
+  });
+  (function loop(){
+    rx+=(mx-rx)*0.11; ry+=(my-ry)*0.11;
+    ring.style.left=rx+'px'; ring.style.top=ry+'px';
+    requestAnimationFrame(loop);
+  })();
+  document.querySelectorAll('a,button').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{ cur.style.width='15px'; cur.style.height='15px'; ring.style.width='50px'; ring.style.height='50px'; });
+    el.addEventListener('mouseleave',()=>{ cur.style.width='8px'; cur.style.height='8px'; ring.style.width='34px'; ring.style.height='34px'; });
+  });
+
+  // ── SCROLL REVEAL ───────────────────────────────────────
+  const obs = new IntersectionObserver(entries=>{
+    entries.forEach((e,i)=>{
+      if(e.isIntersecting){ setTimeout(()=>e.target.classList.add('in'),i*75); obs.unobserve(e.target); }
+    });
+  },{threshold:0.08});
+  document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+</script>
+
+<!--
+  You found the easter egg.
+  Most people never read source code.
+  You do. That tells me something.
+  Email me: adityapandey9326@gmail.com
+  Tell me you found it. I'll remember that conversation.
+  — Aditya
+-->
+</body>
+</html>
